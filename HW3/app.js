@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-const RESET_VALUE = 1;
+const RESET_VALUE = 2;
 
 let scores = [0, 0];
 let activePlayer = 0;
@@ -40,7 +40,9 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
   diceElement2.src = `dice-${dice2}.png`;
   diceElement2.style.display = "block";
 
-  if (dice1 !== RESET_VALUE || dice2 !== RESET_VALUE) {
+  if (dice1 === RESET_VALUE || dice2 === RESET_VALUE || dice2 === dice1) {
+    changePlayer();
+  } else {
     current += (dice1 + dice2);
     document.getElementById("current-" + activePlayer).textContent = current;
 
@@ -48,8 +50,6 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
       alert(`Player ${activePlayer + 1} won!!!`);
       initGame();
     }
-  } else {
-    changePlayer();
   }
 });
 
