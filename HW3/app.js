@@ -18,7 +18,10 @@ let activePlayer = 0;
 let current = 0;
 const diceElement1 = document.querySelector(".dice-1");
 const diceElement2 = document.querySelector(".dice-2");
-
+const player1Name = document.querySelector("#name-0");
+const player2Name = document.querySelector("#name-1");
+let player1;
+let player2;
 const initGame = () => {
   document.querySelector("#current-0").textContent = 0;
   document.querySelector("#current-1").textContent = 0;
@@ -28,6 +31,17 @@ const initGame = () => {
   diceElement2.style.display = "none";
   scores = [0, 0];
   current = 0;
+  player1 = new Gamer();
+  player2 = new Gamer();
+  [player1, player2].forEach((name, i) =>{
+    let newName = prompt(`Введите Имя ${i+1}-го игрока`);
+    while(!newName){
+      newName = prompt(`Нужно ввести Имя ${i+1}-го игрока`);
+    }
+    name.name = newName;
+  });
+  player1Name.textContent = player1.name;
+  player2Name.textContent = player2.name;
 };
 
 initGame();
@@ -56,7 +70,7 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
     document.getElementById("current-" + activePlayer).textContent = current;
     console.log("range", range);
     if (scores[activePlayer] + current >= range) {
-      alert(`Player ${activePlayer + 1} won!!!`);
+      alert(`Player ${activePlayer? player2.name : player1.name} won!!!`);
       initGame();
     }
   }
@@ -86,3 +100,17 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
 document.querySelector(".btn-new").addEventListener("click", function() {
   initGame();
 });
+
+function Gamer(name, score = 0) {
+  this.name = name;
+  this.score = score;
+}
+Gamer.prototype.getScore = function () {
+  return this.score;
+};
+Gamer.prototype.setScore = function (score) {
+  this.score = score;
+};
+Gamer.prototype.resetScore = function () {
+  this.score = 0;
+};
