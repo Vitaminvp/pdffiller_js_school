@@ -10,6 +10,8 @@ GAME RULES:
 */
 
 const RESET_VALUE = 2;
+const DEFAULT_WIN_VALUE = 100;
+const DEFAULT_MAX_VALUE = 1000;
 
 let scores = [0, 0];
 let activePlayer = 0;
@@ -34,6 +36,13 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
   let dice1 = Math.floor(Math.random() * 6) + 1;
   let dice2 = Math.floor(Math.random() * 6) + 1;
 
+  let range = document.querySelector("#range-input").value;
+
+  if( range == 0 || range > DEFAULT_MAX_VALUE) {
+    range = DEFAULT_WIN_VALUE;
+    document.querySelector("#range-input").value = DEFAULT_WIN_VALUE;
+  }
+
   diceElement1.src = `dice-${dice1}.png`;
   diceElement1.style.display = "block";
 
@@ -45,8 +54,8 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
   } else {
     current += (dice1 + dice2);
     document.getElementById("current-" + activePlayer).textContent = current;
-
-    if (scores[activePlayer] + current >= 100) {
+    console.log("range", range);
+    if (scores[activePlayer] + current >= range) {
       alert(`Player ${activePlayer + 1} won!!!`);
       initGame();
     }
