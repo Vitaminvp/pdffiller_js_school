@@ -15,7 +15,7 @@ class Search extends Component {
     if (value) {
       const links = await fetchRepos(value);
       if (Array.isArray(links)) {
-        this.setState({ links });
+        this.setState({ links, value: '' });
       } else {
         alert(links.message);
       }
