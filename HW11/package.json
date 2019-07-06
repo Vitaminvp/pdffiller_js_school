@@ -2,7 +2,7 @@
   "name": "hw11",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://vitaminvp.github.io/repository-name",
+  "homepage":"https://vitaminvp.github.io/pdffiller_js_school/hw11",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
