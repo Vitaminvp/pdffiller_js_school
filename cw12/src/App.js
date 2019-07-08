@@ -72,7 +72,7 @@ class App extends Component {
           ) : (
             list.map(item => (
               <List.Item key={item.id} style={{ textAlign: "left" }}>
-                <List.Icon name="user secret" />
+                <List.Icon name="user circle" />
                 <List.Content>{item.name}</List.Content>
                 <Icon
                   name="delete"
