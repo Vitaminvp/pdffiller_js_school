@@ -15,7 +15,7 @@ class Search extends Component {
     if (value) {
       const links = await fetchRepos(value);
       if (Array.isArray(links)) {
-        this.setState({ links, value: '' });
+        this.setState({ links });
       } else {
         alert(links.message);
       }
@@ -50,7 +50,6 @@ class Search extends Component {
       }
     } else {
       const localState = localStorage.getItem(CONSTANTS.SearchComponentState);
-
       if (localState) {
         this.setState({ ...JSON.parse(localState) });
       }

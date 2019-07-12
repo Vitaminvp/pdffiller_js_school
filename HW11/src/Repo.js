@@ -6,7 +6,7 @@ class Repo extends Component {
   state = {
     repoInfo: {}
   };
-  async componentWillMount() {
+  async componentDidMount() {
     const {
       match: {
         params: { id }
