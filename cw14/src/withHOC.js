@@ -2,15 +2,15 @@ import React from "react";
 import { Context } from "./init";
 
 const withHOC = Component => {
-  class WithDelayHOC extends React.Component {
+  class WithPropsHOC extends React.Component {
     static contextType = Context;
 
     render() {
-      return <Component {...this.props} myStyle={this.context} />;
+      return <Component {...this.props} theme={this.context} />;
     }
   }
 
-  return WithDelayHOC;
+  return WithPropsHOC;
 };
 
 export default withHOC;
