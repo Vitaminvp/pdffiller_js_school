@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "cw14",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,12 +27,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "globally": "0.0.0",
-    "install": "^0.13.0",
-    "it": "^1.1.1",
-    "or": "^0.2.0",
-    "prettier": "^1.18.2"
   }
 }
