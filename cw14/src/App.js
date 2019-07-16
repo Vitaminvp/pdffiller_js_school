@@ -3,6 +3,7 @@ import { Context } from "./init";
 import Child1 from "./Child1";
 import Child2 from "./Child2";
 import withHOC from "./withHOC";
+import MouseTracker from "./MouseTracker";
 
 const Child = withHOC(Child2);
 const themes = {
@@ -45,6 +46,20 @@ class App extends React.Component {
           <Child1 />
           <Child />
         </Context.Provider>
+        <div className="App">
+          <h1>Hello CodeSandbox</h1>
+          <h2>Start editing to see some magic happen!</h2>
+          <MouseTracker>
+            {(x, y) => (
+                <>
+                  <h1>Перемещайте курсор мыши!</h1>
+                  <p>
+                    Текущее положение курсора мыши: ({x}, {y})
+                  </p>
+                </>
+            )}
+          </MouseTracker>
+        </div>
       </>
     );
   }
