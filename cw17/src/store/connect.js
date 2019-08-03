@@ -3,7 +3,7 @@ import { Context } from "./Provider";
 
 const connect = (mapState2Props, mapDispatch2Props) => Component => {
     class ReduxConnect extends React.Component {
-        static contextType = Context;
+        // static contextType = Context;
 
         render() {
             return (
