@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+body,
+html {
+  background-color: #fafafa;
+}
+
+.App {
+  font-family: sans-serif;
+}
+
+.container {
+  padding: 1px 20px 40px 20px;
+  border-radius: 4px;
+  background-color: white;
+  -webkit-box-shadow: 0px 6px 52px -21px rgba(0, 0, 0, 0.28);
+  -moz-box-shadow: 0px 6px 52px -21px rgba(0, 0, 0, 0.28);
+  box-shadow: 0px 6px 52px -21px rgba(0, 0, 0, 0.28);
+}

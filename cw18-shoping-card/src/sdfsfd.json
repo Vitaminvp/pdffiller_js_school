@@ -1,0 +1,14 @@
+{
+  products: {
+    id1: { /* ... */ },
+    id2: { /* ... */ },
+    /* ... */
+  },
+  cart: {
+    productIds: ['id1', 'id2', ...],
+    quantity: {
+      id1: 1,
+      id2: 2
+    },
+  }
+}
