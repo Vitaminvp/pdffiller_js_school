@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Contact = ({ name }) => {
+const Form = ({ name }) => {
   return (
     <div>
       <p>{name}</p>
@@ -9,8 +9,8 @@ const Contact = ({ name }) => {
   );
 };
 
-Contact.propTypes = {
+Form.propTypes = {
   name: PropTypes.string,
 };
 
-export default Contact;
+export default Form;

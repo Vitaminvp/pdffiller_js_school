@@ -1,9 +1,7 @@
-import get from 'lodash/get';
-import uniqueId from 'lodash/uniqueId';
+import get from "lodash/get";
+import uniqueId from "lodash/uniqueId";
 
-const getReducerProp = (prop) => (state) => get(state, prop, {});
+const getReducerProp = prop => state => get(state, prop, {});
+const getFields = prop => state => get(state, prop, []);
 
-export {
-  uniqueId,
-  getReducerProp
-};
+export { uniqueId, getReducerProp, getFields };

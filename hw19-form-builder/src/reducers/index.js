@@ -1,11 +1,11 @@
-import contacts from './contacts';
+import forms from './forms';
 import addContact from './addContact';
-import selectedContact from './selectedContact';
+import selectedForm from './selectedForm';
 import loading from './loading';
 
 export const reducers = {
-  contacts,
+  forms,
   addContact,
-  selectedContact,
+  selectedForm,
   loading,
 };
