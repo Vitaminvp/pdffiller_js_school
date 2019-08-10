@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 
 const Text = ({
-  field: { name, label, placeholder },
+  field: { type, name, label, placeholder },
   value,
-  handleChange
+  handleChange,
+  disabled = false
 }) => {
   return (
     <div>
@@ -17,7 +18,7 @@ const Text = ({
         margin="normal"
         onChange={event => handleChange(name, event.target.value)}
         value={value}
-        required={true}
+        disabled={disabled}
       />
     </div>
   );

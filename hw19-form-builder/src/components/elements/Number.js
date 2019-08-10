@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
+import Text from "./Text";
 
-const Number = ({ field: { name, label }, handleChange, value }) => (
+const Number = ({ field: {type, name, label, placeholder }, handleChange, value, disabled = false }) => (
   <div>
       <TextField
           id={name}
@@ -11,14 +12,16 @@ const Number = ({ field: { name, label }, handleChange, value }) => (
           value={value}
           onChange={(event) => handleChange(name, event.target.value)}
           type="number"
-          InputLabelProps={{
-              shrink: true,
-          }}
           margin="normal"
-          required
+          placeholder={placeholder}
+          disabled={disabled}
       />
   </div>
 );
+
+Number.DefaultProps = {
+    value: ""
+};
 
 // Number.propTypes = {
 //   type: PropTypes.string,

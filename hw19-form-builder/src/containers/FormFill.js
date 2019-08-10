@@ -10,7 +10,8 @@ import {
   formSelector,
   resetForm,
   setForm,
-  addHistory, formHistoryLength
+  addHistory,
+  formHistoryLength
 } from "../reducers/selectedForm";
 import { withRouter } from "react-router-dom";
 import getFormAction from "../action/getForm";
@@ -23,7 +24,8 @@ import DropdownPure from "../components/elements/Dropdown";
 import CheckMarkPure from "../components/elements/Checkmark";
 import { FIELD_NAMES, FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button } from "@material-ui/core";
-import {Save as SaveIcon, History as HistoryIcon} from '@material-ui/icons';
+import { Save as SaveIcon, History as HistoryIcon } from "@material-ui/icons";
+import CustomizedDialogs from "../components/ModalHistory";
 
 class FormFill extends Component {
   constructor(props) {
@@ -40,9 +42,6 @@ class FormFill extends Component {
   }
 
   handleChange(name, value) {
-    // console.log("name, event", name, event);
-    // console.log("event.target.value", event.target.value);
-    console.log("event.target.value", value);
     this.setState({ [name]: value }, () =>
       console.log("this.state", this.state)
     );
@@ -80,10 +79,7 @@ class FormFill extends Component {
       }
       return false;
     }).length;
-    console.log(
-      "-----------------------historyLength",
-        historyLength
-    );
+    console.log("-----------------------historyLength", historyLength);
     return (
       <React.Fragment>
         <Container
@@ -126,16 +122,20 @@ class FormFill extends Component {
                 );
               case FIELD_TYPES.DROPDOWN:
                 return (
-                  <DropdownPure
-                    {...props}
-                    fieldsTypeLength={dropdownFieldsLength}
-                    handleChange={this.handleChange}
-                    value={
-                      this.state[field.name]
-                        ? this.state[field.name]
-                        : field.items[field.default].value
-                    }
-                  />
+                  <React.Fragment key={key}>
+                    {field.items && field.items.length && (
+                      <DropdownPure
+                        {...props}
+                        fieldsTypeLength={dropdownFieldsLength}
+                        handleChange={this.handleChange}
+                        value={
+                          this.state[field.name]
+                            ? this.state[field.name]
+                            : field.items[field.default || 0].name
+                        }
+                      />
+                    )}
+                  </React.Fragment>
                 );
               case FIELD_TYPES.CHECKMARK:
                 return (
@@ -152,7 +152,7 @@ class FormFill extends Component {
                 return <div key={index}>{`Unhandled type: ${field.type}`}</div>;
             }
           })}
-          <div>
+          <div style={{ margin: "50px 0 30px" }}>
             <Button
               variant="outlined"
               size="medium"
@@ -166,26 +166,23 @@ class FormFill extends Component {
             >
               Cancel
             </Button>
-            <Button
-                variant="contained"
-                size="medium"
-                style={{ marginRight: 10 }}
-                onClick={() => {
-                }}
+
+            <CustomizedDialogs
+              history={form.history ? form.history : []}
+              disabled={historyLength <= 0}
             >
-              <HistoryIcon />
-              &nbsp;History
-            </Button>
+              History tables
+            </CustomizedDialogs>
+
             <Button
               disabled={textFieldsLength + numberFieldsLength > isFilled}
               variant="contained"
               size="medium"
               color="primary"
               onClick={() => {
-                addStateToHistory({...this.state, id: Date.now()})
-
-                //putForm(formId, form);
-                //history.push("/");
+                addStateToHistory({ ...this.state, id: Date.now() });
+                putForm(formId, form);
+                history.push("/");
               }}
             >
               <SaveIcon />
@@ -211,7 +208,7 @@ const mapStateToProps = state => ({
   checkMarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
   dropdownFieldsLength: fieldTypeLength(state, FIELD_TYPES.DROPDOWN),
   fieldsLength: fieldLength(state),
-  historyLength: formHistoryLength
+  historyLength: formHistoryLength(state)
 });
 
 const mapDispatchToProps = {
@@ -222,7 +219,7 @@ const mapDispatchToProps = {
   addField: addFormField,
   deleteField: deleteFormField,
   putForm: putFormAction,
-  addStateToHistory: addHistory,
+  addStateToHistory: addHistory
 };
 
 export default withRouter(

@@ -50,7 +50,7 @@ class FormDetail extends Component {
       dropdownFieldsLength,
       textFieldsLength,
       numberFieldsLength,
-      checkmarkFieldsLength,
+      checkMarkFieldsLength,
       fieldsLength,
       putForm,
       resetLoading
@@ -74,6 +74,12 @@ class FormDetail extends Component {
         >
           <h1>Form Detail {formId}</h1>
           <h2>{form.name}</h2>
+          {/*{dropdownFieldsLength < 1 ||*/}
+          {/*  checkMarkFieldsLength < 1 ||*/}
+          {/*  numberFieldsLength < 1 ||*/}
+          {/*  textFieldsLength < 1 || (*/}
+          {/*    /!*<Dropdown  fieldsTypeLength={dropdownFieldsLength} />*!/*/}
+          {/*  )}*/}
           {form.fields.map((field, key) => {
             const props = {
               field,
@@ -100,14 +106,14 @@ class FormDetail extends Component {
                 return (
                   <CheckMark
                     {...props}
-                    fieldsTypeLength={checkmarkFieldsLength}
+                    fieldsTypeLength={checkMarkFieldsLength}
                   />
                 );
               default:
                 return <div key={index}>{`Unhandled type: ${field.type}`}</div>;
             }
           })}
-          <div>
+          <div style={{ margin: "50px 0 30px" }}>
             <Button
               variant="outlined"
               size="medium"
@@ -144,15 +150,14 @@ class FormDetail extends Component {
 //   close: PropTypes.func
 // };
 
-
 const mapStateToProps = state => ({
   form: formSelector(state),
   isFormLoaded: isLoaded(state, LOADING_FORM),
   textFieldsLength: fieldTypeLength(state, FIELD_TYPES.TEXT),
   numberFieldsLength: fieldTypeLength(state, FIELD_TYPES.NUMBER),
-  checkmarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
+  checkMarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
   dropdownFieldsLength: fieldTypeLength(state, FIELD_TYPES.DROPDOWN),
-  fieldsLength: fieldLength(state) // It's could be counted instead textFieldsLength + numberFieldsLength + checkmarkFieldsLength + dropdownFieldsLength
+  fieldsLength: fieldLength(state)
 });
 
 const mapDispatchToProps = {

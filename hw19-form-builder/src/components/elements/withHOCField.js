@@ -17,7 +17,7 @@ const withHOCField = Component => {
       console.log("name", field.name);
       return (
         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-          <Component {...this.props} />
+          <Component {...this.props} disabled={true} value="" />
           {fieldsLength <= MAX_FIELDS && (
             <Tooltip title="Add" aria-label="add">
               <IconButton

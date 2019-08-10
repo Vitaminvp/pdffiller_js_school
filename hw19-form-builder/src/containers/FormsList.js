@@ -26,6 +26,8 @@ import {
   Icon
 } from "@material-ui/core";
 import { StarBorder, Delete, Edit } from "@material-ui/icons";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularDeterminate from "../components/CircularDeterminate";
 
 class FormsList extends Component {
   componentDidMount() {
@@ -54,10 +56,13 @@ class FormsList extends Component {
     } = this.props;
 
     if (!this.props.isFormsLoaded) {
-      return <div>LOADING . . .</div>;
+      return (
+        <CircularDeterminate />
+      );
     }
     return (
       <React.Fragment>
+        <CircularProgress variant="determinate" color="secondary" />
         <Button
           variant="contained"
           color="secondary"
@@ -76,7 +81,7 @@ class FormsList extends Component {
             {forms.map(({ id, name }) => {
               return (
                 <React.Fragment key={id}>
-                  <ListItem key={id} button>
+                  <ListItem button>
                     <ListItemAvatar>
                       <Avatar>
                         <StarBorder />

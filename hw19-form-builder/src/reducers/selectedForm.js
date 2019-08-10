@@ -30,7 +30,7 @@ export default handleActions(
     }),
     [addHistory]: (state, { payload }) => ({
       ...state,
-      history: state.history ? [ ...state.history, payload] : [payload]
+      history: state.history ? [...state.history, payload] : [payload]
     }),
     [deleteFormField]: (state, { payload }) => ({
       ...state,
@@ -45,7 +45,14 @@ export const formFields = createSelector(
   formSelector,
   getFields("fields")
 );
+export const formHistory = createSelector(
+  formSelector,
+  getFields("history")
+);
+
+export const formHistoryLength = state => get(formHistory(state), "length");
 
 export const fieldTypeLength = (state, type = "") =>
   get(formFields(state).filter(field => field.type === type), "length");
+
 export const fieldLength = state => get(formFields(state), "length");
