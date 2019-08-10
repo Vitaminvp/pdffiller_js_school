@@ -1,26 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
+import TextField from "@material-ui/core/TextField";
 
-const Number = ({field: { type, name, label, placeholder }}) => (
+const Number = ({ field: { name, label }, handleChange, value }) => (
   <div>
-    <label htmlFor={name}>{label}</label>
-    <input
-      type={type}
-      name={name}
-      id={name}
-      placeholder={placeholder}
-      min="1"
-      max="10"
-      defaultValue=""
-    />
+      <TextField
+          id={name}
+          name={name}
+          label={label}
+          value={value}
+          onChange={(event) => handleChange(name, event.target.value)}
+          type="number"
+          InputLabelProps={{
+              shrink: true,
+          }}
+          margin="normal"
+          required
+      />
   </div>
 );
 
-Number.propTypes = {
-  type: PropTypes.string,
-  name: PropTypes.string,
-  label: PropTypes.string,
-  placeholder: PropTypes.string
-};
+// Number.propTypes = {
+//   type: PropTypes.string,
+//   name: PropTypes.string,
+//   label: PropTypes.string,
+//   placeholder: PropTypes.string
+// };
 
 export default Number;

@@ -4,11 +4,18 @@ export const FIELD_TYPES = {
   DROPDOWN: "dropdown",
   CHECKMARK: "checkmark"
 };
+export const FIELD_NAMES = {
+  USER: "username",
+  YEAR: "year",
+  GENDER: "gender",
+  NEWS: "news"
+};
+
 export const MIN_FIELDS = 1;
 export const MAX_FIELDS = 15;
 
 export const DEFAULT_FORM = {
-  name: "My Brand New Form 1",
+  name: "New Form",
   fields: [
     {
       type: "text",
@@ -43,5 +50,6 @@ export const DEFAULT_FORM = {
       name: "news",
       label: "get news on email"
     }
-  ]
+  ],
+  history: []
 };

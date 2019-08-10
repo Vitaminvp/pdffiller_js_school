@@ -1,11 +1,11 @@
 import { startLoading, finishLoading } from "../reducers/loading";
-import { CREATE_FORM } from "../constants/loading";
+import {CREATE_FORM, UPDATE_FORM} from "../constants/loading";
 import { URL_FORM } from "../constants/api";
 import getForms from "./getForms";
 
 export default function putForm(id, body) {
   return dispatch => {
-    dispatch(startLoading(CREATE_FORM));
+    dispatch(startLoading(UPDATE_FORM));
     fetch(`${URL_FORM}${id}`, {
       method: "PUT",
       headers: {
@@ -19,7 +19,7 @@ export default function putForm(id, body) {
       })
       .then(() => {
         getForms();
-        dispatch(finishLoading(CREATE_FORM));
+        dispatch(finishLoading(UPDATE_FORM));
       })
       .catch(console.log);
   };

@@ -11,12 +11,12 @@ export const REDUCER_NAME = 'forms';
 
 export const setFormsData = createAction(SET_DATA);
 export const addFormData = createAction(ADD_DATA);
-export const resetContactsData = createAction(RESET_DATA);
+export const resetFormsData = createAction(RESET_DATA);
 
 const initialState = [];
 
 export default handleActions({
-  [resetContactsData]: () => initialState,
+  [resetFormsData]: () => initialState,
   [setFormsData]: (state, { payload }) => payload,
   [addFormData]: (state, payload) => [...state, { id: uniqueId('form_'), name: payload.payload }],
 }, initialState);

@@ -1,16 +1,15 @@
 import { startLoading, finishLoading } from "../reducers/loading";
-import { UPDATE_FORM } from "../constants/loading";
+import { CREATE_FORM } from "../constants/loading";
 import { URL_FORM } from "../constants/api";
 import getForms from "./getForms";
 
 export default function postForm(body) {
   return dispatch => {
-    dispatch(startLoading(UPDATE_FORM));
+    dispatch(startLoading(CREATE_FORM));
     fetch(`${URL_FORM}new`, {
-      method: "PUT",
+      method: "POST",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(body)
     })
@@ -18,8 +17,8 @@ export default function postForm(body) {
         return response.json();
       })
       .then(() => {
-        getForms();
-        dispatch(finishLoading(UPDATE_FORM));
+        dispatch(finishLoading(CREATE_FORM));
+        dispatch(getForms());
       })
       .catch(console.log);
   };

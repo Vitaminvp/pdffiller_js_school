@@ -10,8 +10,8 @@ const NewForm = () => {
     );
 };
 
-NewForm.propTypes = {
-
-};
+// NewForm.propTypes = {
+//
+// };
 
 export default NewForm;

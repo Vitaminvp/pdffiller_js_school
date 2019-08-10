@@ -3,12 +3,29 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { contactsSelector, addFormData } from "../reducers/forms";
 import { valueSelector, setValue, resetValue } from "../reducers/addContact";
-import Form from "../components/Form";
 import AddForm from "../components/AddForm";
 import getFormsAction from "../action/getForms";
 import { LOADING_FORMS } from "../constants/loading";
 import { isLoaded } from "../reducers/loading";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
+import {
+  CssBaseline,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  IconButton,
+  ListItemSecondaryAction,
+  Divider,
+  Button,
+  Icon
+} from "@material-ui/core";
+import { StarBorder, Delete, Edit } from "@material-ui/icons";
 
 class FormsList extends Component {
   componentDidMount() {
@@ -16,48 +33,105 @@ class FormsList extends Component {
       this.props.getForms();
     }
   }
+  printDocument() {
+    const input = document.getElementById("root");
+    html2canvas(input).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", [800, 800]);
+      pdf.addImage(imgData, "JPEG", 0, 0);
+      pdf.save("download.pdf");
+    });
+  }
+
   render() {
     const {
       forms,
       value,
       setContactName,
       addForm,
-      resetContactName
+      resetContactName,
+      history
     } = this.props;
 
     if (!this.props.isFormsLoaded) {
       return <div>LOADING . . .</div>;
     }
     return (
-      <ul>
-        {forms.map(el => (
-          <li key={el.id}>
-            <NavLink to={`/form/${el.id}`}>
-              <Form name={el.name} />
-            </NavLink>
-          </li>
-        ))}
+      <React.Fragment>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.printDocument}
+          style={{ margin: 10 }}
+        >
+          PDF download &nbsp;
+          <Icon>cloud_download</Icon>
+        </Button>
+        <CssBaseline />
+        <Container
+          maxWidth="sm"
+          style={{ background: "#eaeaea", padding: 20, borderRadius: 5 }}
+        >
+          <List>
+            {forms.map(({ id, name }) => {
+              return (
+                <React.Fragment key={id}>
+                  <ListItem key={id} button>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <StarBorder />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <NavLink
+                      to={`/fill/${id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <ListItemText id={id} primary={name} />
+                    </NavLink>
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete" href="#">
+                        <Delete />
+                      </IconButton>
+                      <IconButton
+                        edge="end"
+                        aria-label="edit"
+                        href="#"
+                        onClick={e => {
+                          e.preventDefault();
+                          history.push(`/edit/${id}`);
+                        }}
+                      >
+                        <Edit />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <Divider />
+                </React.Fragment>
+              );
+            })}
+          </List>
 
-        <AddForm
-          onAddForm={addForm}
-          onChange={setContactName}
-          val={value}
-          resetVal={resetContactName}
-        />
-      </ul>
+          <AddForm
+            onAddForm={addForm}
+            onChange={setContactName}
+            val={value}
+            resetVal={resetContactName}
+          />
+        </Container>
+      </React.Fragment>
     );
   }
 }
 // onClick={() => setSelectedForm(el)}
-FormsList.propTypes = {
-  forms: PropTypes.array,
-  value: PropTypes.string,
-  addContact: PropTypes.func,
-  setContactName: PropTypes.func,
-  resetContactName: PropTypes.func,
-  getForms: PropTypes.func,
-  isFormsLoaded: PropTypes.bool
-};
+// FormsList.propTypes = {
+//   forms: PropTypes.array,
+//   value: PropTypes.string,
+//   addContact: PropTypes.func,
+//   setContactName: PropTypes.func,
+//   resetContactName: PropTypes.func,
+//   getForms: PropTypes.func,
+//   isFormsLoaded: PropTypes.bool
+// };
 
 const mapStateToProps = state => ({
   forms: contactsSelector(state),
@@ -72,7 +146,9 @@ const mapDispatchToProps = {
   getForms: getFormsAction
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FormsList);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(FormsList)
+);

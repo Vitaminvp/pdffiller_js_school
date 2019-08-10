@@ -9,8 +9,8 @@ const Form = ({ name }) => {
   );
 };
 
-Form.propTypes = {
-  name: PropTypes.string,
-};
+// Form.propTypes = {
+//   name: PropTypes.string,
+// };
 
 export default Form;

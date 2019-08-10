@@ -1,26 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { uniqueId } from '../../utils';
+import TextField from "@material-ui/core/TextField";
 
-const Text = ({field: { type, name, label, placeholder }}) => (
-  <div>
-    <label htmlFor={name}>{label}</label>
-    <input
-      type={type}
-      name={name}
-      id={name}
-      placeholder={placeholder}
-      defaultValue=""
-    />
-
-  </div>
-);
-
-Text.propTypes = {
-  type: PropTypes.string,
-  name: PropTypes.string,
-  label: PropTypes.string,
-  placeholder: PropTypes.string
+const Text = ({
+  field: { name, label, placeholder },
+  value,
+  handleChange
+}) => {
+  return (
+    <div>
+      <TextField
+        id={name}
+        name={name}
+        label={label}
+        placeholder={placeholder}
+        margin="normal"
+        onChange={event => handleChange(name, event.target.value)}
+        value={value}
+        required={true}
+      />
+    </div>
+  );
 };
+
+Text.DefaultProps = {
+  value: ""
+};
+// Text.propTypes = {
+//   type: PropTypes.string,
+//   name: PropTypes.string,
+//   label: PropTypes.string,
+//   placeholder: PropTypes.string
+// };
 
 export default Text;
