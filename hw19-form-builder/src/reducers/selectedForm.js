@@ -9,6 +9,7 @@ const RESET_FORM = "SELECTED_FORM/RESET_FORM";
 const ADD_FORM_FIELD = "SELECTED_FORM/ADD_FORM_FIELD";
 const DEL_FORM_FIELD = "SELECTED_FORM/DEL_FORM_FIELD";
 const ADD_HISTORY = "SELECTED_FORM/ADD_HISTORY";
+const UPDATE_FIELDS = "SELECTED_FORM/UPDATE_FIELDS";
 
 export const REDUCER_NAME = "selectedForm";
 
@@ -17,6 +18,7 @@ export const resetForm = createAction(RESET_FORM);
 export const addFormField = createAction(ADD_FORM_FIELD);
 export const deleteFormField = createAction(DEL_FORM_FIELD);
 export const addHistory = createAction(ADD_HISTORY);
+export const updateFields = createAction(UPDATE_FIELDS);
 
 const initialState = DEFAULT_FORM;
 
@@ -31,6 +33,10 @@ export default handleActions(
     [addHistory]: (state, { payload }) => ({
       ...state,
       history: state.history ? [...state.history, payload] : [payload]
+    }),
+    [updateFields]: (state, { payload }) => ({
+      ...state,
+      fields: [...payload]
     }),
     [deleteFormField]: (state, { payload }) => ({
       ...state,

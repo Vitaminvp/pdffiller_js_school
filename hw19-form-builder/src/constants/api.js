@@ -7,18 +7,21 @@ const data = {
     name: "My Brand New Form",
     fields: [
         {
+            id: 7,
             type: "text",
             name: "username",
             label: "enter username here",
             placeholder: "John Doe"
         },
         {
+            id: 8,
             type: "number",
             name: "year",
             label: "enter year of birth ",
             placeholder: "2006"
         },
         {
+            id: 9,
             type: "dropdown",
             name: "gender",
             label: "Gender",
@@ -35,6 +38,7 @@ const data = {
             default: 0
         },
         {
+            id: 10,
             type: "checkmark",
             name: "news",
             label: "get news on email"

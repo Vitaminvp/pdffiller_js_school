@@ -1,8 +1,8 @@
 import React from "react";
 import { uniqueId } from "../../utils";
 import { MAX_FIELDS, MIN_FIELDS } from "../../constants/selectedForm";
-import {  Tooltip, IconButton, Divider } from "@material-ui/core";
-import {  Delete, AddCircle } from "@material-ui/icons";
+import { Tooltip, IconButton, Divider } from "@material-ui/core";
+import { Delete, AddCircle } from "@material-ui/icons";
 
 const withHOCField = Component => {
   class WithHOC extends React.PureComponent {
@@ -16,14 +16,20 @@ const withHOCField = Component => {
       } = this.props;
       console.log("name", field.name);
       return (
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
           <Component {...this.props} disabled={true} value="" />
           {fieldsLength <= MAX_FIELDS && (
             <Tooltip title="Add" aria-label="add">
               <IconButton
                 aria-label="add"
                 onClick={() =>
-                  addField({ ...field, name: `name-${uniqueId()+1}` })
+                  addField({ ...field, name: `name-${uniqueId() + 10}`, id: `id-${uniqueId()}` })
                 }
               >
                 <AddCircle />

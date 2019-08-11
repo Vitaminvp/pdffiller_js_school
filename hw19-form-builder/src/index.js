@@ -11,14 +11,17 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Page404 from "./components/Page404";
 import FormNew from "./containers/FormNew";
 import FormFill from "./containers/FormFill";
-import ButtonAppBar from "./components/Header";
-import NavBar from "./components/NavBar";
 import Header from "./components/Header";
 import { Auth0Provider } from "./react-auth0-wrapper";
 import config from "./auth_config.json";
-import Profile from "./components/Profile";
-import PrivateRoute from "./components/PrivateRoute";
-import Callback from "./components/callback";
+import { addLocaleData } from "react-intl";
+// import en from "react-intl/locale-data/en";
+// import ru from "react-intl/locale-data/ru";
+// import uk from "react-intl/locale-data/uk";
+
+// addLocaleData(en);
+// addLocaleData(ru);
+// addLocaleData(uk);
 
 const store = configStore(reducers, createMiddlewares());
 

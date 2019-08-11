@@ -9,7 +9,8 @@ import {
   fieldTypeLength,
   formSelector,
   resetForm,
-  setForm
+  setForm,
+  updateFields
 } from "../reducers/selectedForm";
 import { withRouter } from "react-router-dom";
 import getFormAction from "../action/getForm";
@@ -22,7 +23,9 @@ import DropdownPure from "../components/elements/Dropdown";
 import CheckMarkPure from "../components/elements/Checkmark";
 import withHOCField from "../components/elements/withHOCField";
 import { FIELD_TYPES } from "../constants/selectedForm";
-import { Container, Button } from "@material-ui/core";
+import { Container, Button, List, ListItem, Divider } from "@material-ui/core";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import ListItemPure from "../components/ListItem";
 
 const Text = withHOCField(TextPure);
 const Dropdown = withHOCField(DropdownPure);
@@ -30,6 +33,11 @@ const Number = withHOCField(NumberPure);
 const CheckMark = withHOCField(CheckMarkPure);
 
 class FormDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.onDragEnd = this.onDragEnd.bind(this);
+  }
+
   componentDidMount() {
     const { formId } = this.props.match.params;
 
@@ -40,6 +48,25 @@ class FormDetail extends Component {
   }
   onDragEnd(result) {
     console.log(result);
+    console.log("this.props", this.props);
+    const {
+      params: { formId }
+    } = this.props.match;
+
+    console.log("formId", formId);
+    const { destination, source } = result;
+    if (!destination) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    const { form } = this.props;
+    const fields = [...form.fields];
+    const item = fields.splice(source.index, 1);
+    fields.splice(destination.index, 0, item[0]);
+    this.props.updateFields(fields);
   }
   render() {
     const {
@@ -62,9 +89,8 @@ class FormDetail extends Component {
       params: { formId }
     } = match;
 
-    console.log("this.props", this.props);
     return (
-      <React.Fragment>
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <Container
           maxWidth="sm"
           style={{
@@ -77,39 +103,77 @@ class FormDetail extends Component {
         >
           <h1>Form Detail {formId}</h1>
           <h2>{form.name}</h2>
-          {form.fields.map((field, key) => {
-            const props = {
-              field,
-              key,
-              addField,
-              deleteField,
-              fieldsLength
-            };
-            switch (field.type) {
-              case FIELD_TYPES.TEXT:
-                return <Text {...props} fieldsTypeLength={textFieldsLength} />;
-              case FIELD_TYPES.NUMBER:
-                return (
-                  <Number {...props} fieldsTypeLength={numberFieldsLength} />
-                );
-              case FIELD_TYPES.DROPDOWN:
-                return (
-                  <Dropdown
-                    {...props}
-                    fieldsTypeLength={dropdownFieldsLength}
-                  />
-                );
-              case FIELD_TYPES.CHECKMARK:
-                return (
-                  <CheckMark
-                    {...props}
-                    fieldsTypeLength={checkMarkFieldsLength}
-                  />
-                );
-              default:
-                return <div key={index}>{`Unhandled type: ${field.type}`}</div>;
-            }
-          })}
+          <Droppable droppableId="listFormsDetailedId">
+            {provided => (
+              <List innerRef={provided.innerRef} {...provided.droppableProps}>
+                {form.fields.map((field, index) => {
+                  const props = {
+                    field,
+                    addField,
+                    deleteField,
+                    fieldsLength
+                  };
+
+                  const element = field => {
+                    switch (field.type) {
+                      case FIELD_TYPES.TEXT:
+                        return (
+                          <Text
+                            key={`${field.name}-${index}`}
+                            {...props}
+                            fieldsTypeLength={textFieldsLength}
+                          />
+                        );
+                      case FIELD_TYPES.NUMBER:
+                        return (
+                          <Number
+                            key={`${field.name}-${index}`}
+                            {...props}
+                            fieldsTypeLength={numberFieldsLength}
+                          />
+                        );
+                      case FIELD_TYPES.DROPDOWN:
+                        return (
+                          <Dropdown
+                            key={`${field.name}-${index}`}
+                            {...props}
+                            fieldsTypeLength={dropdownFieldsLength}
+                          />
+                        );
+                      case FIELD_TYPES.CHECKMARK:
+                        return (
+                          <CheckMark
+                            key={`${field.name}-${index}`}
+                            {...props}
+                            fieldsTypeLength={checkMarkFieldsLength}
+                          />
+                        );
+                      default:
+                        return null;
+                    }
+                  };
+
+                  return (
+                    <Draggable draggableId={field.name} index={index} key={field.id || field.name}>
+                      {provided => (
+                        <ListItem
+                          button
+                          innerRef={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          key={field.id || field.name}
+                        >
+                          {element(field)}
+                        </ListItem>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </List>
+            )}
+          </Droppable>
+
           <div style={{ margin: "50px 0 30px" }}>
             <Button
               variant="outlined"
@@ -137,7 +201,7 @@ class FormDetail extends Component {
             </Button>
           </div>
         </Container>
-      </React.Fragment>
+      </DragDropContext>
     );
   }
 }
@@ -164,7 +228,8 @@ const mapDispatchToProps = {
   setSelectedForm: setForm,
   addField: addFormField,
   deleteField: deleteFormField,
-  putForm: putFormAction
+  putForm: putFormAction,
+  updateFields
 };
 
 export default withRouter(
