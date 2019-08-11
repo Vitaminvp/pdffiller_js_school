@@ -11,6 +11,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { DragDropContext } from "react-beautiful-dnd";
 import ShortList from "../components/List";
+import { FormattedMessage } from "react-intl";
 
 import { CssBaseline, Container, Button, Icon } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -63,6 +64,8 @@ class FormsList extends Component {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <CircularProgress variant="determinate" color="secondary" />
+
+
         <Button
           variant="contained"
           color="secondary"

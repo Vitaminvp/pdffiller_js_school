@@ -15,13 +15,13 @@ import Header from "./components/Header";
 import { Auth0Provider } from "./react-auth0-wrapper";
 import config from "./auth_config.json";
 import { addLocaleData } from "react-intl";
-// import en from "react-intl/locale-data/en";
-// import ru from "react-intl/locale-data/ru";
-// import uk from "react-intl/locale-data/uk";
+import en from "react-intl/locale-data/en";
+import ru from "react-intl/locale-data/ru";
+import uk from "react-intl/locale-data/uk";
 
-// addLocaleData(en);
-// addLocaleData(ru);
-// addLocaleData(uk);
+addLocaleData(en);
+addLocaleData(ru);
+addLocaleData(uk);
 
 const store = configStore(reducers, createMiddlewares());
 
