@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { TextField, MenuItem } from "@material-ui/core";
-import Number from "./Number";
 
 const Dropdown = ({ field, value = "", handleChange, disabled = false }) => {
   const { type, name, label, items = [] } = field;

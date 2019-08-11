@@ -38,7 +38,9 @@ class FormDetail extends Component {
       this.props.getForm(formId);
     }
   }
-
+  onDragEnd(result) {
+    console.log(result);
+  }
   render() {
     const {
       form,
@@ -69,17 +71,12 @@ class FormDetail extends Component {
             background: "#eaeaea",
             padding: 20,
             borderRadius: 5,
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: 50
           }}
         >
           <h1>Form Detail {formId}</h1>
           <h2>{form.name}</h2>
-          {/*{dropdownFieldsLength < 1 ||*/}
-          {/*  checkMarkFieldsLength < 1 ||*/}
-          {/*  numberFieldsLength < 1 ||*/}
-          {/*  textFieldsLength < 1 || (*/}
-          {/*    /!*<Dropdown  fieldsTypeLength={dropdownFieldsLength} />*!/*/}
-          {/*  )}*/}
           {form.fields.map((field, key) => {
             const props = {
               field,

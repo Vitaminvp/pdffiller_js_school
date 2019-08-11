@@ -54,7 +54,8 @@ class FormNew extends Component {
             background: "#eaeaea",
             padding: 20,
             borderRadius: 5,
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: 50
           }}
         >
           <h1>Form Detail </h1>

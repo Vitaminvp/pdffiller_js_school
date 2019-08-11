@@ -1,31 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { contactsSelector, addFormData } from "../reducers/forms";
+import { contactsSelector, addFormData, setFormsData } from "../reducers/forms";
 import { valueSelector, setValue, resetValue } from "../reducers/addContact";
 import AddForm from "../components/AddForm";
 import getFormsAction from "../action/getForms";
 import { LOADING_FORMS } from "../constants/loading";
 import { isLoaded } from "../reducers/loading";
-import { NavLink, withRouter } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { DragDropContext } from "react-beautiful-dnd";
+import ShortList from "../components/List";
 
-import {
-  CssBaseline,
-  Container,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  IconButton,
-  ListItemSecondaryAction,
-  Divider,
-  Button,
-  Icon
-} from "@material-ui/core";
-import { StarBorder, Delete, Edit } from "@material-ui/icons";
+import { CssBaseline, Container, Button, Icon } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CircularDeterminate from "../components/CircularDeterminate";
 
@@ -34,6 +21,7 @@ class FormsList extends Component {
     if (!this.props.isFormsLoaded) {
       this.props.getForms();
     }
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
   printDocument() {
     const input = document.getElementById("root");
@@ -44,24 +32,36 @@ class FormsList extends Component {
       pdf.save("download.pdf");
     });
   }
-
+  onDragEnd(result) {
+    console.log(result);
+    const { destination, source } = result;
+    if (!destination) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    const { forms } = this.props;
+    const newForms = [...forms];
+    const item = newForms.splice(source.index, 1);
+    newForms.splice(destination.index, 0, item[0]);
+    this.props.setFormsData(newForms);
+  }
   render() {
     const {
       forms,
       value,
       setContactName,
       addForm,
-      resetContactName,
-      history
+      resetContactName
     } = this.props;
 
     if (!this.props.isFormsLoaded) {
-      return (
-        <CircularDeterminate />
-      );
+      return <CircularDeterminate />;
     }
     return (
-      <React.Fragment>
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <CircularProgress variant="determinate" color="secondary" />
         <Button
           variant="contained"
@@ -77,44 +77,7 @@ class FormsList extends Component {
           maxWidth="sm"
           style={{ background: "#eaeaea", padding: 20, borderRadius: 5 }}
         >
-          <List>
-            {forms.map(({ id, name }) => {
-              return (
-                <React.Fragment key={id}>
-                  <ListItem button>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <StarBorder />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <NavLink
-                      to={`/fill/${id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <ListItemText id={id} primary={name} />
-                    </NavLink>
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete" href="#">
-                        <Delete />
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        aria-label="edit"
-                        href="#"
-                        onClick={e => {
-                          e.preventDefault();
-                          history.push(`/edit/${id}`);
-                        }}
-                      >
-                        <Edit />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <Divider />
-                </React.Fragment>
-              );
-            })}
-          </List>
+          <ShortList forms={forms} />
 
           <AddForm
             onAddForm={addForm}
@@ -123,11 +86,10 @@ class FormsList extends Component {
             resetVal={resetContactName}
           />
         </Container>
-      </React.Fragment>
+      </DragDropContext>
     );
   }
 }
-// onClick={() => setSelectedForm(el)}
 // FormsList.propTypes = {
 //   forms: PropTypes.array,
 //   value: PropTypes.string,
@@ -148,12 +110,11 @@ const mapDispatchToProps = {
   addForm: addFormData,
   setContactName: setValue,
   resetContactName: resetValue,
-  getForms: getFormsAction
+  getForms: getFormsAction,
+  setFormsData
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(FormsList)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FormsList);
