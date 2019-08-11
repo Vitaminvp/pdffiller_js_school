@@ -1,7 +1,11 @@
+import {Button} from "@material-ui/core";
+import React from "react";
+
 export default {
     en: {
-        title: "Some title",
-        buttonTitle: "Add",
+        title: "Forms list",
+        addButton: "Add form",
+        download: "PDF download",
         all: "All",
         active: "active",
         completed: "completed",
@@ -10,8 +14,9 @@ export default {
         mixLength: "Min 4 symbols."
     },
     ru: {
-        title: "Заглавие",
-        buttonTitle: "Добавить",
+        title: "Список форм",
+        addButton: "Добавить",
+        download: "PDF скачать",
         all: "Все",
         active: "Активные",
         completed: "Завершенные",
@@ -20,8 +25,9 @@ export default {
         mixLength: "Минимум 4 символа."
     },
     uk: {
-        title: "Заголовок",
-        buttonTitle: "Додати",
+        title: "Список форм УКР",
+        addButton: "Додати",
+        download: "PDF завантажити",
         all: "Усі",
         active: "Активні",
         completed: "Завершені",

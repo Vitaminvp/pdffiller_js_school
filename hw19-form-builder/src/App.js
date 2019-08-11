@@ -15,7 +15,7 @@ class App extends Component {
         <div style={{ textAlign: "center" }}>
 
           <h1><FormattedMessage id="title" defaultMessage="Title default++++++" /></h1>
-          <FormsList />
+          <FormsList download="download"/>
         </div>
       </IntlProvider>
     );

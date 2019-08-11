@@ -72,7 +72,10 @@ class FormsList extends Component {
           onClick={this.printDocument}
           style={{ margin: 10 }}
         >
-          PDF download &nbsp;
+          <FormattedMessage
+              id={this.props.download}
+              defaultMessage="download"
+          /> &nbsp;
           <Icon>cloud_download</Icon>
         </Button>
         <CssBaseline />

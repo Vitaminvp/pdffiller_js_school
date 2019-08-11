@@ -76,6 +76,9 @@ class ButtonAppBar extends React.Component {
               <MenuItem onClick={e => this.handleClose(e, "ru")}>
                 Русский
               </MenuItem>
+              <MenuItem onClick={e => this.handleClose(e, "uk")}>
+                Українська
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
