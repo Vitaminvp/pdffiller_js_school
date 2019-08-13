@@ -14,7 +14,6 @@ const withHOCField = Component => {
         fieldsLength,
         fieldsTypeLength
       } = this.props;
-      console.log("name", field.name);
       return (
         <div
           style={{

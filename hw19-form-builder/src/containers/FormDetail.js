@@ -23,9 +23,8 @@ import DropdownPure from "../components/elements/Dropdown";
 import CheckMarkPure from "../components/elements/Checkmark";
 import withHOCField from "../components/elements/withHOCField";
 import { FIELD_TYPES } from "../constants/selectedForm";
-import { Container, Button, List, ListItem, Divider } from "@material-ui/core";
+import { Container, Button, List, ListItem } from "@material-ui/core";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import ListItemPure from "../components/ListItem";
 
 const Text = withHOCField(TextPure);
 const Dropdown = withHOCField(DropdownPure);
@@ -42,18 +41,11 @@ class FormDetail extends Component {
     const { formId } = this.props.match.params;
 
     if (!this.props.isFormLoaded) {
-      console.log("isFormLoaded", formId);
       this.props.getForm(formId);
     }
   }
   onDragEnd(result) {
-    console.log(result);
-    console.log("this.props", this.props);
-    const {
-      params: { formId }
-    } = this.props.match;
 
-    console.log("formId", formId);
     const { destination, source } = result;
     if (!destination) return;
     if (

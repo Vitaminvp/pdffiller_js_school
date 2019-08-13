@@ -32,7 +32,6 @@ class ButtonAppBar extends React.Component {
     this.setState({
       AnchorEl: false
     });
-    console.log("lang2", lang);
     this.props.setLang(lang);
   }
   render() {

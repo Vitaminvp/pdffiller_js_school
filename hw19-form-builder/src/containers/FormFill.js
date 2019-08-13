@@ -79,7 +79,6 @@ class FormFill extends Component {
       }
       return false;
     }).length;
-    console.log("-----------------------historyLength", historyLength);
     return (
       <React.Fragment>
         <Container

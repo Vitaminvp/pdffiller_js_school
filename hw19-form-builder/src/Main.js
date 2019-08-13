@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Header from "./components/Header";
+import HeaderAppBar from "./components/HeaderAppBar";
 import App from "./App";
 import FormNew from "./containers/FormNew";
 import FormDetail from "./containers/FormDetail";
@@ -9,14 +9,15 @@ import FormFill from "./containers/FormFill";
 import Page404 from "./components/Page404";
 import { IntlProvider } from "react-intl";
 import messages from "./constants/messages";
+import {setLang} from "./reducers/lang";
 
 class Main extends Component {
   render() {
-    const { lang } = this.props;
+    const { lang, setLang } = this.props;
     return (
       <IntlProvider locale={lang} messages={messages[lang]}>
         <Router>
-          <Header />
+          <HeaderAppBar setLang={setLang} />
           <Switch>
             <Route exact path="/" component={App} />
             <Route path="/new" component={FormNew} />
@@ -36,4 +37,9 @@ const mapStateToProps = ({ lang }) => ({
   lang: lang.value
 });
 
-export default connect(mapStateToProps)(Main);
+const mapDispatchToProps = {
+  setLang
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

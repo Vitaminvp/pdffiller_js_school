@@ -71,7 +71,6 @@ export default function CustomizedDialogs({ history, children, disabled }) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log("history", history);
   return (
     <>
       <Button
