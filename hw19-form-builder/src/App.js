@@ -1,32 +1,19 @@
 import React, { Component } from "react";
-
 import FormsList from "./containers/FormsList";
-import {FormattedMessage, IntlProvider} from "react-intl";
+import { FormattedMessage } from "react-intl";
 // import "./styles/App.css";
-import messages from "./constants/messages";
-import { connect } from "react-redux";
-
 
 class App extends Component {
   render() {
-    const { lang } = this.props;
     return (
-      <IntlProvider locale={lang} messages={messages[lang]}>
-        <div style={{ textAlign: "center" }}>
-
-          <h1><FormattedMessage id="title" defaultMessage="Title default++++++" /></h1>
-          <FormsList download="download"/>
-        </div>
-      </IntlProvider>
+      <div style={{ textAlign: "center" }}>
+        <h1>
+          <FormattedMessage id="title" defaultMessage="Title default++++++" />
+        </h1>
+        <FormsList download="download" />
+      </div>
     );
   }
 }
 
-const mapStateToProps = ({ lang }) => ({
-  lang: lang.value
-});
-
-export default connect(
-  mapStateToProps,
-  null
-)(App);
+export default App;

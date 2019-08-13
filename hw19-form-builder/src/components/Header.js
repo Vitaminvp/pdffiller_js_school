@@ -12,6 +12,7 @@ import auth0 from "../services/auth0";
 import connect from "react-redux/es/connect/connect";
 import { Language } from "@material-ui/icons";
 import { langSelector, setLang } from "../reducers/lang";
+import {FormattedMessage} from "react-intl";
 
 class ButtonAppBar extends React.Component {
   constructor(props) {
@@ -41,9 +42,11 @@ class ButtonAppBar extends React.Component {
         <AppBar position="static">
           <Toolbar style={{ justifyContent: "flex-end" }}>
             <Button color="inherit" onClick={() => auth0.login()}>
-              Login
+              <FormattedMessage id="login" defaultMessage="Login" />
             </Button>
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit">
+              <FormattedMessage id="logout" defaultMessage="Logout" />
+            </Button>
 
             <IconButton
               aria-label="account of current user"

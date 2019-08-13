@@ -7,15 +7,14 @@ import AddForm from "../components/AddForm";
 import getFormsAction from "../action/getForms";
 import { LOADING_FORMS } from "../constants/loading";
 import { isLoaded } from "../reducers/loading";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { DragDropContext } from "react-beautiful-dnd";
 import ShortList from "../components/List";
-import { FormattedMessage } from "react-intl";
 
-import { CssBaseline, Container, Button, Icon } from "@material-ui/core";
+import { CssBaseline, Container } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CircularDeterminate from "../components/CircularDeterminate";
+import PrintPDF from "../components/PrintPDF";
+import {langSelector} from "../reducers/lang";
 
 class FormsList extends Component {
   componentDidMount() {
@@ -23,15 +22,6 @@ class FormsList extends Component {
       this.props.getForms();
     }
     this.onDragEnd = this.onDragEnd.bind(this);
-  }
-  printDocument() {
-    const input = document.getElementById("root");
-    html2canvas(input).then(canvas => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", [800, 800]);
-      pdf.addImage(imgData, "JPEG", 0, 0);
-      pdf.save("download.pdf");
-    });
   }
   onDragEnd(result) {
     console.log(result);
@@ -65,19 +55,8 @@ class FormsList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <CircularProgress variant="determinate" color="secondary" />
 
+        <PrintPDF />
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={this.printDocument}
-          style={{ margin: 10 }}
-        >
-          <FormattedMessage
-              id={this.props.download}
-              defaultMessage="download"
-          /> &nbsp;
-          <Icon>cloud_download</Icon>
-        </Button>
         <CssBaseline />
         <Container
           maxWidth="sm"
@@ -109,7 +88,8 @@ class FormsList extends Component {
 const mapStateToProps = state => ({
   forms: contactsSelector(state),
   value: valueSelector(state),
-  isFormsLoaded: isLoaded(state, LOADING_FORMS)
+  isFormsLoaded: isLoaded(state, LOADING_FORMS),
+  lang: langSelector(state)
 });
 
 const mapDispatchToProps = {
