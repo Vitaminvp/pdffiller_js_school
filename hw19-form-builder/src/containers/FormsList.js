@@ -24,7 +24,6 @@ class FormsList extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
   }
   onDragEnd(result) {
-    console.log(result);
     const { destination, source } = result;
     if (!destination) return;
     if (

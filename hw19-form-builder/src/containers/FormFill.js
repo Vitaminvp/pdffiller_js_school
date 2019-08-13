@@ -26,6 +26,7 @@ import { FIELD_NAMES, FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button } from "@material-ui/core";
 import { Save as SaveIcon, History as HistoryIcon } from "@material-ui/icons";
 import CustomizedDialogs from "../components/ModalHistory";
+import {FormattedMessage} from "react-intl";
 
 class FormFill extends Component {
   constructor(props) {
@@ -164,14 +165,14 @@ class FormFill extends Component {
                 history.push("/");
               }}
             >
-              Cancel
+              <FormattedMessage id="cancel" defaultMessage="Cancel" />
             </Button>
 
             <CustomizedDialogs
               history={form.history ? form.history : []}
               disabled={historyLength <= 0}
             >
-              History tables
+              <FormattedMessage id="historyTables" defaultMessage="History" />
             </CustomizedDialogs>
 
             <Button
@@ -186,7 +187,7 @@ class FormFill extends Component {
               }}
             >
               <SaveIcon />
-              &nbsp;Save
+              &nbsp;<FormattedMessage id="save" defaultMessage="Save" />
             </Button>
           </div>
         </Container>

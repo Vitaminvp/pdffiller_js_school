@@ -7,7 +7,12 @@ export default {
         download: "PDF download",
         login: "Login",
         logout: "Logout",
-
+        update: "Update",
+        cancel: "Cancel",
+        history: "History",
+        save: "Save",
+        close: "Close",
+        historyTables: "History Tables"
     },
     ru: {
         title: "Список форм",
@@ -15,7 +20,12 @@ export default {
         download: "PDF скачать",
         login: "Войти",
         logout: "Выйти",
-
+        update: "Обновить",
+        cancel: "Выйти",
+        history: "История",
+        save: "Сохранить",
+        close: "Закрыть",
+        historyTables: "История заполнения"
     },
     uk: {
         title: "Список форм УКР",
@@ -23,5 +33,11 @@ export default {
         download: "PDF завантажити",
         login: "Увійти",
         logout: "Вийти",
+        update: "Оновити",
+        cancel: "Вийти",
+        history: "Історія",
+        save: "Зберегти",
+        close: "Закрити",
+        historyTables: "Історія заповнення"
     }
 };

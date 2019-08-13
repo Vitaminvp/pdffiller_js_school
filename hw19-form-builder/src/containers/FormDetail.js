@@ -25,6 +25,7 @@ import withHOCField from "../components/elements/withHOCField";
 import { FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button, List, ListItem } from "@material-ui/core";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {FormattedMessage} from "react-intl";
 
 const Text = withHOCField(TextPure);
 const Dropdown = withHOCField(DropdownPure);
@@ -189,7 +190,7 @@ class FormDetail extends Component {
                 history.push("/");
               }}
             >
-              Update
+              <FormattedMessage id="update" defaultMessage="Update" />
             </Button>
           </div>
         </Container>
