@@ -1,9 +1,10 @@
 import React from "react";
 import { withAuth } from "../services";
 import { Button, Container } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
 const Login = withAuth(({ isAuthorized, authorize }) => {
-  return isAuthorized ? (
+  return isAuthorized() ? (
     <Container
       maxWidth="sm"
       style={{
@@ -18,7 +19,7 @@ const Login = withAuth(({ isAuthorized, authorize }) => {
         variant="contained"
         size="medium"
         color="primary"
-        // onClick={authorize}
+        onClick={authorize}
       >
         Logout
       </Button>
@@ -40,7 +41,7 @@ const Login = withAuth(({ isAuthorized, authorize }) => {
         color="primary"
         onClick={authorize}
       >
-        Login
+        <FormattedMessage id="login" defaultMessage="Login" />
       </Button>
     </Container>
   );

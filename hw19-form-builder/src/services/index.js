@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import auth0 from "auth0-js";
+import Cookies from "js-cookie";
 
 const { Provider, Consumer: AuthConsumer } = React.createContext({
   isAuthorized: false
@@ -13,6 +13,7 @@ class AuthProvider extends Component {
     this.authorize = this.authorize.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.logout = this.logout.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
     this.auth0 = new auth0.WebAuth({
       domain: "dev-89anh0xa.eu.auth0.com",
       clientID: "ytWgl3QewGPM7B0zGYjnbMYQiHMCqSY6",
@@ -27,14 +28,25 @@ class AuthProvider extends Component {
   }
   logout(history) {
     this.setState({ isAuthorized: false }, () => {
-      history.push("/")
+      //
     });
+    Cookies.remove('user');
+    Cookies.remove('jwt');
+    Cookies.remove('expiresAt');
+
+    this.auth0.logout({
+      returnTo: "",
+      clientID: "ytWgl3QewGPM7B0zGYjnbMYQiHMCqSY6"
+    })
+
+    history.push("/");
   }
   handleAuthentication(history) {
     this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken) {
+      if (authResult && authResult.accessToken && authResult.idToken) {
         this.setState({ isAuthorized: true }, () => {
-            history.push("/")
+          this.setSession(authResult)
+          history.push("/");
         });
       } else if (err) {
         console.log(err);
@@ -42,10 +54,34 @@ class AuthProvider extends Component {
     });
   }
 
+  isAuthenticated() {
+    const expiresAt = Cookies.getJSON("expiresAt");
+    return new Date().getTime() < expiresAt
+  }
+
+  setSession(authResult) {
+    const expiresAt = JSON.stringify(
+      authResult.expiresIn * 1000 + new Date().getTime()
+    );
+
+    Cookies.set('user', authResult.idTokenPayload);
+    Cookies.set('jwt', authResult.idToken);
+    Cookies.set('expiresAt', expiresAt);
+
+    // history.replace("/");
+  }
+
   render() {
-    const { isAuthorized } = this.state;
+    // const { isAuthorized } = this.state;
     return (
-      <Provider value={{ isAuthorized, authorize: this.authorize, handleAuthentication: this.handleAuthentication, logout: this.logout }}>
+      <Provider
+        value={{
+          isAuthorized: this.isAuthenticated,
+          authorize: this.authorize,
+          handleAuthentication: this.handleAuthentication,
+          logout: this.logout
+        }}
+      >
         {this.props.children}
       </Provider>
     );
@@ -64,4 +100,4 @@ export function withAuth(Component) {
   };
 }
 
-export default (AuthProvider);
+export default AuthProvider;

@@ -17,7 +17,7 @@ import Login from "./components/Login";
 import Callback from "./components/callback";
 import Profile from "./components/Profile";
 
-class Main extends Component {
+class Routes extends Component {
   render() {
     const { lang, setLang } = this.props;
     return (
@@ -28,12 +28,11 @@ class Main extends Component {
             <Switch>
               <Route path="/callback" component={Callback} />
               <Route exact path="/" component={App} />
-
               <Route path="/new" component={FormNew} />
               <PrivateRoute path="/edit/:formId" component={FormDetail} />
               <Route path="/fill/:formId" component={FormFill} />
               <Route path="/login" component={Login} />
-              <Route path="/profile" component={Profile} />
+              <PrivateRoute path="/profile" component={Profile} />
               {/*<Redirect to="/" />*/}
               <Route component={Page404} />
             </Switch>
@@ -55,4 +54,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Main);
+)(Routes);

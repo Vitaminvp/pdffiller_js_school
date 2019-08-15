@@ -63,7 +63,7 @@ const HeaderAppBar = withAuth(
                     </Button>
                 </div>
                 <div>
-                  {isAuthorized ? (
+                  {isAuthorized() ? (
                     <Button color="inherit" onClick={() => logout(history)}>
                       <FormattedMessage id="logout" defaultMessage="Logout" />
                     </Button>

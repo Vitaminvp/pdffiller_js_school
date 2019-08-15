@@ -15,6 +15,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import CircularDeterminate from "../components/CircularDeterminate";
 import PrintPDF from "../components/PrintPDF";
 import {langSelector} from "../reducers/lang";
+import {withAuth} from "../services";
 
 class FormsList extends Component {
   componentDidMount() {
@@ -51,6 +52,7 @@ class FormsList extends Component {
     if (!this.props.isFormsLoaded) {
       return <CircularDeterminate />;
     }
+    console.log("isAuthorized", isAuthorized)
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <CircularProgress variant="determinate" color="secondary" />
@@ -64,7 +66,7 @@ class FormsList extends Component {
         >
           <ShortList forms={forms} isAuthorized={isAuthorized} />
 
-         {!isAuthorized && <AddForm
+         {isAuthorized() && <AddForm
             onAddForm={addForm}
             onChange={setContactName}
             val={value}
@@ -100,7 +102,7 @@ const mapDispatchToProps = {
   setFormsData
 };
 
-export default connect(
+export default withAuth(connect(
   mapStateToProps,
   mapDispatchToProps
-)(FormsList);
+)(FormsList));

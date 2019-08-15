@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div style={{ textAlign: "center" }}>
         <h1>
-          <FormattedMessage id="title" defaultMessage="Title default++++++" />
+          <FormattedMessage id="title" defaultMessage="Title default" />
         </h1>
         <FormsList download="download" />
       </div>
