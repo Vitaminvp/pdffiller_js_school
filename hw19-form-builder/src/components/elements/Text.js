@@ -27,11 +27,16 @@ const Text = ({
 Text.DefaultProps = {
   value: ""
 };
-// Text.propTypes = {
-//   type: PropTypes.string,
-//   name: PropTypes.string,
-//   label: PropTypes.string,
-//   placeholder: PropTypes.string
-// };
+Text.propTypes = {
+  field: PropTypes.shape({
+    type: PropTypes.string,
+    name: PropTypes.string,
+    label: PropTypes.string,
+    placeholder: PropTypes.string
+  }),
+  handleChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  value: PropTypes.string
+};
 
 export default Text;

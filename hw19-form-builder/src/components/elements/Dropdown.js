@@ -40,12 +40,16 @@ Dropdown.DefaultProps = {
   field: { items: [] }
 };
 
-// Dropdown.propTypes = {
-//   type: PropTypes.string,
-//   name: PropTypes.string,
-//   label: PropTypes.string,
-//   default: PropTypes.number,
-//   items: PropTypes.array
-// };
+Dropdown.propTypes = {
+  field: PropTypes.shape({
+    type: PropTypes.string,
+    name: PropTypes.string,
+    label: PropTypes.string,
+    items: PropTypes.array
+  }),
+  default: PropTypes.number,
+  handleChange: PropTypes.func,
+  disabled: PropTypes.bool
+};
 
 export default Dropdown;

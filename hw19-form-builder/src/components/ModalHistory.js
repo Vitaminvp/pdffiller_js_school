@@ -111,7 +111,7 @@ export default function CustomizedDialogs({ history, children, disabled }) {
                       <TableCell key={index}>
                         {key === "id"
                           ? new Intl.DateTimeFormat("en-GB").format(obj[key])
-                          : obj[key]}
+                          : obj[key].toString()}
                       </TableCell>
                     ))}
                   </TableRow>

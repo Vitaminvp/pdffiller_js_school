@@ -15,6 +15,7 @@ import AuthProvider from "./services";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/Login";
 import Callback from "./components/callback";
+import Profile from "./components/Profile";
 
 class Main extends Component {
   render() {
@@ -32,7 +33,7 @@ class Main extends Component {
               <PrivateRoute path="/edit/:formId" component={FormDetail} />
               <Route path="/fill/:formId" component={FormFill} />
               <Route path="/login" component={Login} />
-              {/*<PrivateRoute path="/profile" component={App} />*/}
+              <Route path="/profile" component={Profile} />
               {/*<Redirect to="/" />*/}
               <Route component={Page404} />
             </Switch>

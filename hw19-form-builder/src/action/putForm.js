@@ -1,5 +1,5 @@
 import { startLoading, finishLoading } from "../reducers/loading";
-import {CREATE_FORM, UPDATE_FORM} from "../constants/loading";
+import { UPDATE_FORM } from "../constants/loading";
 import { URL_FORM } from "../constants/api";
 import getForms from "./getForms";
 

@@ -10,6 +10,8 @@ import { Button } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { withRouter } from "react-router-dom";
 import { withAuth } from "../services";
+import Avatar from "@material-ui/core/Avatar";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,10 +43,24 @@ const HeaderAppBar = withAuth(
           <Toolbar style={{ justifyContent: "space-between" }}>
             {
               <>
-                <div>
+                <div style={{display: "flex", justifyContent: "center"}}>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt="Travis Howard"
+                      src="/static/avatar.png"
+                      style={{
+                          zoom: "1.5",
+                          border: "1px solid",
+                          marginRight: 20
+                      }}
+                    />
+                  </ListItemAvatar>
                   <Button color="inherit" onClick={() => history.push("/")}>
                     <FormattedMessage id="home" defaultMessage="Home" />
                   </Button>
+                    <Button color="inherit" onClick={() => history.push("/profile")}>
+                        <FormattedMessage id="profile" defaultMessage="Profile" />
+                    </Button>
                 </div>
                 <div>
                   {isAuthorized ? (
