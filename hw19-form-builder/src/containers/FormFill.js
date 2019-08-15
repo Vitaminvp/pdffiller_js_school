@@ -11,7 +11,9 @@ import {
   resetForm,
   setForm,
   addHistory,
-  formHistoryLength
+  formHistoryLength,
+  ratingSelector,
+  setVote
 } from "../reducers/selectedForm";
 import { withRouter } from "react-router-dom";
 import getFormAction from "../action/getForm";
@@ -24,22 +26,46 @@ import DropdownPure from "../components/elements/Dropdown";
 import CheckMarkPure from "../components/elements/Checkmark";
 import { FIELD_NAMES, FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button } from "@material-ui/core";
-import { Save as SaveIcon, History as HistoryIcon } from "@material-ui/icons";
+import { Save as SaveIcon } from "@material-ui/icons";
 import CustomizedDialogs from "../components/ModalHistory";
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from "react-intl";
+import StarRating from "../components/StarRating";
+import {withAuth} from "../services";
 
 class FormFill extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.handleChange = this.handleChange.bind(this);
+    this.fillState = this.fillState.bind(this);
   }
+
+  fillState() {
+    const {
+      form: { fields }
+    } = this.props;
+
+    if (Array.isArray(fields)) {
+      fields.forEach(field => {
+        if (field.type === FIELD_TYPES.DROPDOWN) {
+          if (!this.state[field.name])
+            this.setState({ [field.name]: field.items[field.default].name });
+        } else if (field.type === FIELD_TYPES.CHECKMARK) {
+          if (!this.state[field.name])
+            this.setState({ [field.name]: false });
+        }
+      });
+    }
+  }
+
   componentDidMount() {
     const { formId } = this.props.match.params;
 
     if (!this.props.isFormLoaded) {
       this.props.getForm(formId);
     }
+
+    this.fillState();
   }
 
   handleChange(name, value) {
@@ -64,22 +90,17 @@ class FormFill extends Component {
       putForm,
       resetLoading,
       addStateToHistory,
-      historyLength
+      historyLength,
+      rating,
+      vote
     } = this.props;
     if (!form) return null;
     const {
       params: { formId }
     } = match;
 
-    const isFilled = Object.keys(this.state).filter(item => {
-      if (
-        item.startsWith(FIELD_NAMES.USER) ||
-        item.startsWith(FIELD_NAMES.YEAR)
-      ) {
-        return this.state[item].length > 0;
-      }
-      return false;
-    }).length;
+    const isFilled = Object.keys(this.state).length;
+
     return (
       <React.Fragment>
         <Container
@@ -94,6 +115,7 @@ class FormFill extends Component {
         >
           <h1>Form #{formId}</h1>
           <h2>{form.name}</h2>
+          <StarRating rating={rating || 0} vote={vote || 0} />
           {form.fields.map((field, key) => {
             const props = {
               field,
@@ -132,7 +154,7 @@ class FormFill extends Component {
                         value={
                           this.state[field.name]
                             ? this.state[field.name]
-                            : field.items[field.default || 0].name
+                            : field.items[field.default].name
                         }
                       />
                     )}
@@ -176,18 +198,19 @@ class FormFill extends Component {
             </CustomizedDialogs>
 
             <Button
-              disabled={textFieldsLength + numberFieldsLength > isFilled}
+              disabled={fieldsLength > isFilled}
               variant="contained"
               size="medium"
               color="primary"
               onClick={() => {
                 addStateToHistory({ ...this.state, id: Date.now() });
-                putForm(formId, form);
+                // putForm(formId, form);
                 history.push("/");
               }}
             >
               <SaveIcon />
-              &nbsp;<FormattedMessage id="save" defaultMessage="Save" />
+              &nbsp;
+              <FormattedMessage id="save" defaultMessage="Save" />
             </Button>
           </div>
         </Container>
@@ -209,7 +232,8 @@ const mapStateToProps = state => ({
   checkMarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
   dropdownFieldsLength: fieldTypeLength(state, FIELD_TYPES.DROPDOWN),
   fieldsLength: fieldLength(state),
-  historyLength: formHistoryLength(state)
+  historyLength: formHistoryLength(state),
+  rating: ratingSelector(state)
 });
 
 const mapDispatchToProps = {
@@ -220,12 +244,13 @@ const mapDispatchToProps = {
   addField: addFormField,
   deleteField: deleteFormField,
   putForm: putFormAction,
-  addStateToHistory: addHistory
+  addStateToHistory: addHistory,
+  vote: setVote
 };
 
-export default withRouter(
+export default withAuth(withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
   )(FormFill)
-);
+));

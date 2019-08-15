@@ -51,5 +51,6 @@ export const DEFAULT_FORM = {
       label: "get news on email"
     }
   ],
-  history: []
+  history: [],
+  rating: {votes: 0, rating: 0}
 };

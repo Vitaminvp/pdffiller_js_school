@@ -12,7 +12,8 @@ export default {
         history: "History",
         save: "Save",
         close: "Close",
-        historyTables: "History Tables"
+        historyTables: "History Tables",
+        home: "Home"
     },
     ru: {
         title: "Список форм",
@@ -25,7 +26,8 @@ export default {
         history: "История",
         save: "Сохранить",
         close: "Закрыть",
-        historyTables: "История заполнения"
+        historyTables: "История заполнения",
+        home: "Главная"
     },
     uk: {
         title: "Список форм УКР",
@@ -38,6 +40,7 @@ export default {
         history: "Історія",
         save: "Зберегти",
         close: "Закрити",
-        historyTables: "Історія заповнення"
+        historyTables: "Історія заповнення",
+        home: "Головна"
     }
 };

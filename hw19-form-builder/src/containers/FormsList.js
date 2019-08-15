@@ -44,7 +44,8 @@ class FormsList extends Component {
       value,
       setContactName,
       addForm,
-      resetContactName
+      resetContactName,
+      isAuthorized
     } = this.props;
 
     if (!this.props.isFormsLoaded) {
@@ -61,14 +62,14 @@ class FormsList extends Component {
           maxWidth="sm"
           style={{ background: "#eaeaea", padding: 20, borderRadius: 5 }}
         >
-          <ShortList forms={forms} />
+          <ShortList forms={forms} isAuthorized={isAuthorized} />
 
-          <AddForm
+         {!isAuthorized && <AddForm
             onAddForm={addForm}
             onChange={setContactName}
             val={value}
             resetVal={resetContactName}
-          />
+          />}
         </Container>
       </DragDropContext>
     );

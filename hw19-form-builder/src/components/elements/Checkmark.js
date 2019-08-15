@@ -11,9 +11,10 @@ const CheckMark = ({ field: { type, name, label }, checked, handleChange, disabl
           <Checkbox
             checked={checked}
             onChange={event =>
-              handleChange(name, event.target.checked.toString())
+                {console.log("event.target.checked", event.target.checked);
+                 handleChange(name, event.target.checked);}
             }
-            value="checked"
+            // value="checked"
             color="secondary"
             inputProps={{
               "aria-label": "secondary checkbox"

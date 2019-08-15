@@ -25,7 +25,9 @@ import withHOCField from "../components/elements/withHOCField";
 import { FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button, List, ListItem } from "@material-ui/core";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from "react-intl";
+import StarRating from "../components/StarRating";
+import { ratingSelector, setVote } from "../reducers/selectedForm";
 
 const Text = withHOCField(TextPure);
 const Dropdown = withHOCField(DropdownPure);
@@ -46,7 +48,6 @@ class FormDetail extends Component {
     }
   }
   onDragEnd(result) {
-
     const { destination, source } = result;
     if (!destination) return;
     if (
@@ -75,7 +76,9 @@ class FormDetail extends Component {
       checkMarkFieldsLength,
       fieldsLength,
       putForm,
-      resetLoading
+      resetLoading,
+      rating,
+      vote
     } = this.props;
     if (!form) return null;
     const {
@@ -96,6 +99,7 @@ class FormDetail extends Component {
         >
           <h1>Form Detail {formId}</h1>
           <h2>{form.name}</h2>
+          <StarRating rating={rating || 0} vote={vote || 0} />
           <Droppable droppableId="listFormsDetailedId">
             {provided => (
               <List innerRef={provided.innerRef} {...provided.droppableProps}>
@@ -147,7 +151,11 @@ class FormDetail extends Component {
                   };
 
                   return (
-                    <Draggable draggableId={field.name} index={index} key={field.id || field.name}>
+                    <Draggable
+                      draggableId={field.name}
+                      index={index}
+                      key={field.id || field.name}
+                    >
                       {provided => (
                         <ListItem
                           button
@@ -179,7 +187,7 @@ class FormDetail extends Component {
                 history.push("/");
               }}
             >
-              Cancel
+              <FormattedMessage id="cancel" defaultMessage="Cancel" />
             </Button>
             <Button
               variant="contained"
@@ -211,7 +219,8 @@ const mapStateToProps = state => ({
   numberFieldsLength: fieldTypeLength(state, FIELD_TYPES.NUMBER),
   checkMarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
   dropdownFieldsLength: fieldTypeLength(state, FIELD_TYPES.DROPDOWN),
-  fieldsLength: fieldLength(state)
+  fieldsLength: fieldLength(state),
+  rating: ratingSelector(state)
 });
 
 const mapDispatchToProps = {
@@ -222,7 +231,8 @@ const mapDispatchToProps = {
   addField: addFormField,
   deleteField: deleteFormField,
   putForm: putFormAction,
-  updateFields
+  updateFields,
+  vote: setVote
 };
 
 export default withRouter(
