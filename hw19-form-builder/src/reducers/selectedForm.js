@@ -1,6 +1,6 @@
 import { handleActions, createAction } from "redux-actions";
 import { createSelector } from "reselect";
-import { getFields, getReducerProp } from "../utils";
+import { getFields, getReducerProp, getRatingProp } from "../utils";
 import get from "lodash/get";
 import { DEFAULT_FORM } from "../constants/selectedForm";
 
@@ -28,7 +28,10 @@ export default handleActions(
   {
     [setVote]: (state, { payload }) => ({
       ...state,
-      rating: { votes: state.rating ? state.rating.votes + 1 : 1, rating: payload }
+      rating: {
+        votes: state.rating ? state.rating.votes + 1 : 1,
+        rating: payload
+      }
     }),
     [resetForm]: () => initialState,
     [setForm]: (state, { payload }) => payload,
@@ -71,10 +74,12 @@ export const fieldLength = state => get(formFields(state), "length");
 
 const ratingsSelector = createSelector(
   formSelector,
-  getFields("rating")
+  getReducerProp("rating")
 );
 
 export const ratingSelector = createSelector(
   ratingsSelector,
-  getFields("rating")
+  getRatingProp("rating")
 );
+
+// export const ratingSelector = get(ratingsSelector, "rating");

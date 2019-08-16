@@ -32,7 +32,7 @@ const ListItemPure = withRouter(
               <NavLink to={`/fill/${id}`} style={{ textDecoration: "none" }}>
                 <ListItemText id={id} primary={name} />
               </NavLink>
-              {isAuthorized() && (
+              {isAuthorized && (
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete" href="#">
                     <Delete />

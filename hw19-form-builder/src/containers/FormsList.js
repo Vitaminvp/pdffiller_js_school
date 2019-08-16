@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { contactsSelector, addFormData, setFormsData } from "../reducers/forms";
-import { valueSelector, setValue, resetValue } from "../reducers/addContact";
 import AddForm from "../components/AddForm";
 import getFormsAction from "../action/getForms";
 import { LOADING_FORMS } from "../constants/loading";
@@ -16,6 +15,7 @@ import CircularDeterminate from "../components/CircularDeterminate";
 import PrintPDF from "../components/PrintPDF";
 import {langSelector} from "../reducers/lang";
 import {withAuth} from "../services";
+import Tooltip from "../components/ToolTip";
 
 class FormsList extends Component {
   componentDidMount() {
@@ -43,61 +43,50 @@ class FormsList extends Component {
     const {
       forms,
       value,
-      setContactName,
       addForm,
-      resetContactName,
       isAuthorized
     } = this.props;
 
     if (!this.props.isFormsLoaded) {
       return <CircularDeterminate />;
     }
-    console.log("isAuthorized", isAuthorized)
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <CircularProgress variant="determinate" color="secondary" />
-
-        <PrintPDF />
-
+        <Tooltip text='Downloading PDF file'><PrintPDF /></Tooltip>
         <CssBaseline />
         <Container
           maxWidth="sm"
-          style={{ background: "#eaeaea", padding: 20, borderRadius: 5 }}
+          style={{ background: "#eaeaea", padding: 20, borderRadius: 5, marginBottom: 20}}
         >
           <ShortList forms={forms} isAuthorized={isAuthorized} />
 
-         {isAuthorized() && <AddForm
+         {isAuthorized && <AddForm
             onAddForm={addForm}
-            onChange={setContactName}
             val={value}
-            resetVal={resetContactName}
           />}
         </Container>
       </DragDropContext>
     );
   }
 }
-// FormsList.propTypes = {
-//   forms: PropTypes.array,
-//   value: PropTypes.string,
-//   addContact: PropTypes.func,
-//   setContactName: PropTypes.func,
-//   resetContactName: PropTypes.func,
-//   getForms: PropTypes.func,
-//   isFormsLoaded: PropTypes.bool
-// };
+FormsList.propTypes = {
+  forms: PropTypes.array,
+  lang: PropTypes.object,
+  getForms: PropTypes.func,
+  addForm: PropTypes.func,
+  isFormsLoaded: PropTypes.bool,
+  isAuthorized: PropTypes.bool,
+  setFormsData: PropTypes.func,
+};
 
 const mapStateToProps = state => ({
   forms: contactsSelector(state),
-  value: valueSelector(state),
   isFormsLoaded: isLoaded(state, LOADING_FORMS),
   lang: langSelector(state)
 });
 
 const mapDispatchToProps = {
   addForm: addFormData,
-  setContactName: setValue,
-  resetContactName: resetValue,
   getForms: getFormsAction,
   setFormsData
 };

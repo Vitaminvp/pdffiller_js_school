@@ -14,7 +14,9 @@ export default {
         close: "Close",
         historyTables: "History Tables",
         home: "Home",
-        profile: "Profile"
+        profile: "Profile",
+        user: "User profile information",
+        creator: "About Author",
     },
     ru: {
         title: "Список форм",
@@ -29,7 +31,9 @@ export default {
         close: "Закрыть",
         historyTables: "История заполнения",
         home: "Главная",
-        profile: "Профиль"
+        profile: "Профиль",
+        user: "О Пользователе",
+        creator: "О Создателе",
     },
     uk: {
         title: "Список форм УКР",
@@ -44,6 +48,8 @@ export default {
         close: "Закрити",
         historyTables: "Історія заповнення",
         home: "Головна",
-        profile: "Профіль"
+        profile: "Профіль",
+        user: "Про Користувача",
+        creator: "Про Розробника",
     }
 };

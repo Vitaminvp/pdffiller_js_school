@@ -23,7 +23,7 @@ export default  function StarRating({rating, vote}) {
         <div
             onMouseOut={() => hoverOver(null)}
             onClick={(event =>
-                vote(event.target.getAttribute("star-id") || selection))
+                vote(+event.target.getAttribute("star-id") || +selection))
             }
             onMouseOver={hoverOver}
         >

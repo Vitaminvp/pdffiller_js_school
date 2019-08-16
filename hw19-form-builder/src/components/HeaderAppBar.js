@@ -12,6 +12,9 @@ import { withRouter } from "react-router-dom";
 import { withAuth } from "../services";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Typography from "@material-ui/core/Typography";
+import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +25,23 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  flexBox: {
+    display: "flex",
+    alignItems: "center"
+  },
+  toolbar: {
+    justifyContent: "space-between"
+  },
+  avatar: {
+    zoom: "1.5",
+    border: "1px solid",
+    marginRight: 20
+  },
+  typography: {
+    color: "#888888",
+    textTransform: "UPPERCASE",
+    fontSize: "inherit"
   }
 }));
 
@@ -37,36 +57,54 @@ const HeaderAppBar = withAuth(
       setAnchorEl(null);
       setLang(lang);
     }
+    const token = Cookies.getJSON("jwt");
+    const user = isAuthorized ? jwt.decode(token) : undefined;
+    if(user){
+        const expiresAt = user.exp * 1000;
+        if (Date.now() > expiresAt) {
+            logout(history)
+        }
+    }
+
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar style={{ justifyContent: "space-between" }}>
+          <Toolbar className={classes.toolbar}>
             {
               <>
-                <div style={{display: "flex", justifyContent: "center"}}>
+                <div className={classes.flexBox}>
                   <ListItemAvatar>
                     <Avatar
                       alt="Travis Howard"
                       src="/static/avatar.png"
-                      style={{
-                          zoom: "1.5",
-                          border: "1px solid",
-                          marginRight: 20
-                      }}
+                      className={classes.avatar}
                     />
                   </ListItemAvatar>
                   <Button color="inherit" onClick={() => history.push("/")}>
                     <FormattedMessage id="home" defaultMessage="Home" />
                   </Button>
-                    <Button color="inherit" onClick={() => history.push("/profile")}>
-                        <FormattedMessage id="profile" defaultMessage="Profile" />
-                    </Button>
+                  <Button
+                    color="inherit"
+                    onClick={() => history.push("/profile")}
+                  >
+                    <FormattedMessage id="profile" defaultMessage="Profile" />
+                  </Button>
                 </div>
-                <div>
-                  {isAuthorized() ? (
-                    <Button color="inherit" onClick={() => logout(history)}>
-                      <FormattedMessage id="logout" defaultMessage="Logout" />
-                    </Button>
+                <div className={classes.flexBox}>
+                  {isAuthorized ? (
+                    <div className={classes.flexBox}>
+                      <Typography
+                        variant="h6"
+                        noWrap
+                        className={classes.typography}
+                      >
+                        {user ? user.name : ""}
+                      </Typography>
+                      <Button color="inherit" onClick={() => logout(history)}>
+                        <FormattedMessage id="logout" defaultMessage="Logout" />
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       color="inherit"
@@ -77,7 +115,7 @@ const HeaderAppBar = withAuth(
                   )}
                   <IconButton
                     aria-label="account of current user"
-                    aria-controls="menu-appbar"
+                    aria-controls="menu-appBar"
                     aria-haspopup="true"
                     onClick={handleMenu}
                     color="inherit"
@@ -85,7 +123,7 @@ const HeaderAppBar = withAuth(
                     <Language />
                   </IconButton>
                   <Menu
-                    id="menu-appbar"
+                    id="menu-appBar"
                     anchorEl={anchorEl}
                     anchorOrigin={{
                       vertical: "top",

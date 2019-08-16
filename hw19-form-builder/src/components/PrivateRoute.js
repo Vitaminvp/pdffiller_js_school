@@ -6,7 +6,7 @@ import { withAuth } from "../services";
 const PrivateRoute = withAuth(({ component: RouteComponent, isAuthorized, ...rest }) => {
 
   const render = props =>
-      isAuthorized() === true ? <RouteComponent {...props} /> : <Redirect to="/" />;
+      !!isAuthorized === true ? <RouteComponent {...props} /> : <Redirect to="/" />;
 
   return (<Route render={render} {...rest} />);
 });

@@ -3,13 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import {
-  addFormField,
-  deleteFormField,
   fieldLength,
-  fieldTypeLength,
   formSelector,
   resetForm,
-  setForm,
   addHistory,
   formHistoryLength,
   ratingSelector,
@@ -24,13 +20,14 @@ import TextPure from "../components/elements/Text";
 import NumberPure from "../components/elements/Number";
 import DropdownPure from "../components/elements/Dropdown";
 import CheckMarkPure from "../components/elements/Checkmark";
-import { FIELD_NAMES, FIELD_TYPES } from "../constants/selectedForm";
+import { FIELD_TYPES } from "../constants/selectedForm";
 import { Container, Button } from "@material-ui/core";
 import { Save as SaveIcon } from "@material-ui/icons";
 import CustomizedDialogs from "../components/ModalHistory";
 import { FormattedMessage } from "react-intl";
 import StarRating from "../components/StarRating";
-import {withAuth} from "../services";
+import { withAuth } from "../services";
+import Tooltip from "../components/ToolTip";
 
 class FormFill extends Component {
   constructor(props) {
@@ -51,8 +48,7 @@ class FormFill extends Component {
           if (!this.state[field.name])
             this.setState({ [field.name]: field.items[field.default].name });
         } else if (field.type === FIELD_TYPES.CHECKMARK) {
-          if (!this.state[field.name])
-            this.setState({ [field.name]: false });
+          if (!this.state[field.name]) this.setState({ [field.name]: false });
         }
       });
     }
@@ -77,15 +73,9 @@ class FormFill extends Component {
   render() {
     const {
       form,
-      close,
       match,
+      close,
       history,
-      addField,
-      deleteField,
-      dropdownFieldsLength,
-      textFieldsLength,
-      numberFieldsLength,
-      checkMarkFieldsLength,
       fieldsLength,
       putForm,
       resetLoading,
@@ -100,7 +90,7 @@ class FormFill extends Component {
     } = match;
 
     const isFilled = Object.keys(this.state).length;
-
+console.log("rating", rating);
     return (
       <React.Fragment>
         <Container
@@ -114,14 +104,12 @@ class FormFill extends Component {
           }}
         >
           <h1>Form #{formId}</h1>
-          <h2>{form.name}</h2>
+          <Tooltip text='Simple tooltip: Header H2'><h2>{form.name}</h2></Tooltip>
           <StarRating rating={rating || 0} vote={vote || 0} />
           {form.fields.map((field, key) => {
             const props = {
               field,
               key,
-              addField,
-              deleteField,
               fieldsLength
             };
             switch (field.type) {
@@ -129,7 +117,6 @@ class FormFill extends Component {
                 return (
                   <TextPure
                     {...props}
-                    fieldsTypeLength={textFieldsLength}
                     handleChange={this.handleChange}
                     value={this.state[field.name] ? this.state[field.name] : ""}
                   />
@@ -138,7 +125,6 @@ class FormFill extends Component {
                 return (
                   <NumberPure
                     {...props}
-                    fieldsTypeLength={numberFieldsLength}
                     handleChange={this.handleChange}
                     value={this.state[field.name] ? this.state[field.name] : ""}
                   />
@@ -149,7 +135,6 @@ class FormFill extends Component {
                     {field.items && field.items.length && (
                       <DropdownPure
                         {...props}
-                        fieldsTypeLength={dropdownFieldsLength}
                         handleChange={this.handleChange}
                         value={
                           this.state[field.name]
@@ -164,7 +149,6 @@ class FormFill extends Component {
                 return (
                   <CheckMarkPure
                     {...props}
-                    fieldsTypeLength={checkMarkFieldsLength}
                     handleChange={this.handleChange}
                     checked={
                       this.state[field.name] ? !!this.state[field.name] : false
@@ -204,7 +188,7 @@ class FormFill extends Component {
               color="primary"
               onClick={() => {
                 addStateToHistory({ ...this.state, id: Date.now() });
-                // putForm(formId, form);
+                putForm(formId, form);
                 history.push("/");
               }}
             >
@@ -219,18 +203,23 @@ class FormFill extends Component {
   }
 }
 
-// FormFill.propTypes = {
-//   form: PropTypes.object,
-//   close: PropTypes.func
-// };
+FormFill.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func
+  }),
+  putForm: PropTypes.func,
+  resetLoading: PropTypes.func,
+  addStateToHistory: PropTypes.func,
+  historyLength: PropTypes.number,
+  rating: PropTypes.number,
+  vote: PropTypes.func,
+  form: PropTypes.object,
+  close: PropTypes.func
+};
 
 const mapStateToProps = state => ({
   form: formSelector(state),
   isFormLoaded: isLoaded(state, LOADING_FORM),
-  textFieldsLength: fieldTypeLength(state, FIELD_TYPES.TEXT),
-  numberFieldsLength: fieldTypeLength(state, FIELD_TYPES.NUMBER),
-  checkMarkFieldsLength: fieldTypeLength(state, FIELD_TYPES.CHECKMARK),
-  dropdownFieldsLength: fieldTypeLength(state, FIELD_TYPES.DROPDOWN),
   fieldsLength: fieldLength(state),
   historyLength: formHistoryLength(state),
   rating: ratingSelector(state)
@@ -240,17 +229,16 @@ const mapDispatchToProps = {
   close: resetForm,
   resetLoading,
   getForm: getFormAction,
-  setSelectedForm: setForm,
-  addField: addFormField,
-  deleteField: deleteFormField,
   putForm: putFormAction,
   addStateToHistory: addHistory,
   vote: setVote
 };
 
-export default withAuth(withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(FormFill)
-));
+export default withAuth(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(FormFill)
+  )
+);

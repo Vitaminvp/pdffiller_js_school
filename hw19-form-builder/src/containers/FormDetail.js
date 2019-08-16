@@ -206,11 +206,27 @@ class FormDetail extends Component {
     );
   }
 }
-//
-// FormDetail.propTypes = {
-//   form: PropTypes.object,
-//   close: PropTypes.func
-// };
+
+FormDetail.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func
+  }),
+  addField: PropTypes.func,
+  isFormLoaded: PropTypes.bool,
+  dropdownFieldsLength: PropTypes.number,
+  textFieldsLength: PropTypes.number,
+  numberFieldsLength: PropTypes.number,
+  checkMarkFieldsLength: PropTypes.number,
+  fieldsLength: PropTypes.number,
+  putForm: PropTypes.func,
+  resetLoading: PropTypes.func,
+  addStateToHistory: PropTypes.func,
+  historyLength: PropTypes.func,
+  rating: PropTypes.number,
+  vote: PropTypes.func,
+  form: PropTypes.object,
+  close: PropTypes.func
+};
 
 const mapStateToProps = state => ({
   form: formSelector(state),

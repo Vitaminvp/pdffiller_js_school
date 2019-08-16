@@ -4,7 +4,7 @@ import { Button, Container } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
 const Login = withAuth(({ isAuthorized, authorize }) => {
-  return isAuthorized() ? (
+  return isAuthorized ? (
     <Container
       maxWidth="sm"
       style={{
